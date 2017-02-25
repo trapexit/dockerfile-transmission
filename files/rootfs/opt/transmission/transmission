@@ -1,0 +1,15 @@
+#!/bin/sh
+
+mkdir -p /torrents/.config
+mkdir -p /torrents/.watch
+if [[ ! -e /torrents/.config/settings.json ]]; then
+    cp -v /etc/transmission/settings.json /torrents/.config/
+fi
+
+exec /usr/bin/transmission-daemon \
+     --foreground \
+     --config-dir /torrents/.config/ \
+     --port ${RPC_PORT:-9091} \
+     --peerport ${PEER_PORT:-54321} \
+     --username ${USERNAME:-admin} \
+     --password ${PASSWORD:-$(hostname)}
